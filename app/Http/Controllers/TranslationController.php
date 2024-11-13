@@ -50,7 +50,7 @@ class TranslationController extends Controller
     public function index(Request $request)
     {
 
-        $result = array();
+        $result = [];
 
         $data = Translation::whereNull('parent_id');
 
@@ -75,7 +75,7 @@ class TranslationController extends Controller
     public function show($id)
     {
 
-        $result = array();
+        $result = [];
 
         $result['data'] = $data = Translation::where('parent_id', $id)->get();
 
@@ -143,7 +143,7 @@ class TranslationController extends Controller
     public function search(Request $request)
     {
 
-        $result = array();
+        $result = [];
 
         $data = Translation::whereNotNull('full_path')->whereNotNull('translations');
 
@@ -255,7 +255,7 @@ class TranslationController extends Controller
     public function unpublishedTranslation()
     {
 
-        $result = array();
+        $result = [];
 
         $result['data'] = $data = Translation::where(function ($query) {
             $query->whereNull('translation_published')->orWhere('translation_published', 0);
@@ -311,8 +311,8 @@ class TranslationController extends Controller
 //        }
 
         $path = $path ?? resource_path('views'); //if null just parse views
-        $groupKeys = array();
-        $functions = array(
+        $groupKeys = [];
+        $functions = [
             'trans',
             'trans_choice',
             'Lang::get',
@@ -322,7 +322,7 @@ class TranslationController extends Controller
             '@lang',
             '@choice',
             '__',
-        );
+        ];
 
         $groupPattern = "[^\w|>]" . "(" . implode('|', $functions) . ")" . "\(" . "[\'\"]" . "(" . "[a-zA-Z0-9_-]+" . "([.|\/][^\1)]+)+" . ")" . "[\'\"]" . "[\),]"; // Close parentheses or new parameter
         $finder = new Finder();
@@ -361,7 +361,7 @@ class TranslationController extends Controller
     {
         if (!is_array($array)) return false;
         $splitRE = '/' . preg_quote($delimiter, '/') . '/';
-        $returnArr = array();
+        $returnArr = [];
         foreach ($array as $key => $val) {
             // Get parent parts and the current leaf
             $parts = preg_split($splitRE, $key, -1, PREG_SPLIT_NO_EMPTY);
@@ -373,12 +373,12 @@ class TranslationController extends Controller
             // @codeCoverageIgnoreStart
             foreach ($parts as $part) {
                 if (!isset($parentArr[$part])) {
-                    $parentArr[$part] = array();
+                    $parentArr[$part] = [];
                 } elseif (!is_array($parentArr[$part])) {
                     if ($baseval) {
-                        $parentArr[$part] = array('__base_val' => $parentArr[$part]);
+                        $parentArr[$part] = ['__base_val' => $parentArr[$part]];
                     } else {
-                        $parentArr[$part] = array();
+                        $parentArr[$part] = [];
                     }
                 }
                 $parentArr = &$parentArr[$part];
