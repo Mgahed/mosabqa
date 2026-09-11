@@ -39,6 +39,9 @@ class TranslateJob implements ShouldQueue
                 ];
                 $item->translations = json_encode($data);
                 $item->save();
+
+                // Prevent rate-limiting from Google
+                sleep(2);
             }
         }
     }
