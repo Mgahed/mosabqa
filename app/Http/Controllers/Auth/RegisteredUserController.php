@@ -84,7 +84,11 @@ class RegisteredUserController extends Controller
             $rules['country'] = ['nullable', 'string', 'max:255'];
         }
 
-        $request->validate($rules);
+        $messages = [
+            'phone.regex' => __('admin.The phone field format is invalid'),
+        ];
+
+        $request->validate($rules, $messages);
 
         // birth_date and gender based on nid if available
         $birthDate = $request->nid ? getBirthDate($request->nid) : null;
