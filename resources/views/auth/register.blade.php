@@ -3,8 +3,19 @@
     <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10">
         @php
             $register = \App\Models\Lookup::where('name', 'registration')->first();
+            $maxUsersLookup = \App\Models\Lookup::where('name', 'max_registered_users')->first();
+            $limitReached = false;
+            if ($maxUsersLookup && $maxUsersLookup->record_state == 1 && is_numeric($maxUsersLookup->value)) {
+                $studentRole = \Laratrust\Models\Role::where('name', 'student')->first();
+                $registeredUsersCount = \App\Models\User::whereHas('roles', function($q) use ($studentRole) {
+                    $q->where('id', $studentRole->id);
+                })->count();
+                if ($registeredUsersCount >= (int)$maxUsersLookup->value) {
+                    $limitReached = true;
+                }
+            }
         @endphp
-        @if($register && $register->record_state == 1 && $register->value == 1)
+        @if($register && $register->record_state == 1 && $register->value == 1 && !$limitReached)
             <!--begin::Form-->
             <form class="form w-100" id="kt_sign_in_form"
                   action="{{route('register')}}" method="post">
@@ -178,7 +189,11 @@
             <!--end::Form-->
         @else
             <h1 class="text-center mb-5">
-                {{__('admin.Register is closed')}}
+                @if($limitReached)
+                    {{__('admin.You cannot register please contact the admin')}}
+                @else
+                    {{__('admin.Register is closed')}}
+                @endif
             </h1>
         @endif
         <!--begin::Footer-->

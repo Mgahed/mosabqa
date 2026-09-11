@@ -73,9 +73,9 @@ class RegisteredUserController extends Controller
         }
 
         if ($showPhone == '1') {
-            $rules['phone'] = ['required', 'string', 'regex:/^(011|012|010|015)[0-9]{8}$/'];
+            $rules['phone'] = ['required', 'string', 'regex:/^(011|012|010|015)[0-9]{8}$/', 'unique:users,phone'];
         } else {
-            $rules['phone'] = ['nullable', 'string', 'regex:/^(011|012|010|015)[0-9]{8}$/'];
+            $rules['phone'] = ['nullable', 'string', 'regex:/^(011|012|010|015)[0-9]{8}$/', 'unique:users,phone'];
         }
 
         if ($showCountry == '1') {
@@ -86,9 +86,23 @@ class RegisteredUserController extends Controller
 
         $messages = [
             'phone.regex' => __('admin.The phone field format is invalid'),
+            'phone.unique' => __('admin.The phone has already been taken'),
         ];
 
         $request->validate($rules, $messages);
+
+        // Check registration limit
+        $maxUsersLookup = \App\Models\Lookup::where('name', 'max_registered_users')->first();
+        if ($maxUsersLookup && $maxUsersLookup->record_state == 1 && is_numeric($maxUsersLookup->value)) {
+            $studentRole = \Laratrust\Models\Role::where('name', 'student')->first();
+            $registeredUsersCount = User::whereHas('roles', function($q) use ($studentRole) {
+                $q->where('id', $studentRole->id);
+            })->count();
+
+            if ($registeredUsersCount >= (int)$maxUsersLookup->value) {
+                return redirect()->back()->withInput()->withErrors(['name' => __('admin.You cannot register please contact the admin')]);
+            }
+        }
 
         // birth_date and gender based on nid if available
         $birthDate = $request->nid ? getBirthDate($request->nid) : null;
