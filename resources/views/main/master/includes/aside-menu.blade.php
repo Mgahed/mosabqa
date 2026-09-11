@@ -163,6 +163,20 @@
             </div>
             <!--end:Menu item-->
 
+            <!--Registration Settings-->
+            <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link @if(str_contains($currentRouteName, 'registration-settings')){{'active'}}@endif"
+                   href="{{route('registration-settings.index')}}">
+                    <span class="menu-icon">
+                        <i class="fa fa-cogs"></i>
+                    </span>
+                    <span class="menu-title">{{__('admin.Registration Settings')}}</span>
+                </a>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
             <!--Translations-->
             <div class="menu-item">
                 <!--begin:Menu link-->

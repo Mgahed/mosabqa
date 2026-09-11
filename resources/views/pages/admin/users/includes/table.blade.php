@@ -10,6 +10,8 @@
             <th>{{__('admin.Role')}}</th>
             <th>{{__('admin.Name')}}</th>
             <th>{{__('admin.Nid')}}</th>
+            <th>{{__('admin.Phone')}}</th>
+            <th>{{__('admin.Country')}}</th>
             <th>{{__('admin.Serial')}}</th>
             <th>{{__('admin.Category')}}</th>
             <th>{{__('admin.Gender')}}</th>
@@ -27,6 +29,8 @@
                 <td>{{$item->role}}</td>
                 <td>{{@$item->name}}</td>
                 <td>{{@$item->nid}}</td>
+                <td>{{@$item->phone}}</td>
+                <td>{{@$item->country}}</td>
                 <td>{{@$item->serial}}</td>
                 <td>{{@$item->category->name}}</td>
                 <td>{{@$item->gender}}</td>

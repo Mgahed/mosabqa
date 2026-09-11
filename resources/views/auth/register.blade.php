@@ -23,6 +23,16 @@
                         <!--begin::Heading-->
                         <!--begin::Input group=-->
                         <div class="fv-row mb-8">
+                            @php
+                                $showName = \App\Models\Lookup::where('name', 'reg_field_name')->value('value') ?? '1';
+                                $showDegree = \App\Models\Lookup::where('name', 'reg_field_degree')->value('value') ?? '1';
+                                $showSchool = \App\Models\Lookup::where('name', 'reg_field_school')->value('value') ?? '1';
+                                $showNid = \App\Models\Lookup::where('name', 'reg_field_nid')->value('value') ?? '1';
+                                $showPhone = \App\Models\Lookup::where('name', 'reg_field_phone')->value('value') ?? '1';
+                                $showCountry = \App\Models\Lookup::where('name', 'reg_field_country')->value('value') ?? '1';
+                            @endphp
+
+                            @if($showName == '1')
                             <!--begin::Name-->
                             <div id="name-group">
                                 <label for="name">
@@ -38,6 +48,9 @@
                                 @enderror
                             </div>
                             <!--end::Name-->
+                            @endif
+
+                            @if($showDegree == '1')
                             <!--begin::Degree-->
                             <div id="degree-group" class="mt-5">
                                 <label for="degree">
@@ -55,8 +68,11 @@
                                 @enderror
                             </div>
                             <!--end::Degree-->
-                            <!--begin::Degree-->
-                            <div id="degree-group" class="mt-5">
+                            @endif
+
+                            @if($showSchool == '1')
+                            <!--begin::School-->
+                            <div id="school-group" class="mt-5">
                                 <label for="school">
                                     {{__('admin.Your school')}}
                                 </label>
@@ -81,7 +97,10 @@
                                 <div class="fv-plugins message-container invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
-                            <!--end::Degree-->
+                            <!--end::School-->
+                            @endif
+
+                            @if($showNid == '1')
                             <!--begin::Nid-->
                             <div id="nid-group" class="mt-5">
                                 <label for="nid">
@@ -96,6 +115,41 @@
                                 <div class="fv-plugins message-container invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
+                            @endif
+
+                            @if($showPhone == '1')
+                            <!--begin::Phone-->
+                            <div id="phone-group" class="mt-5">
+                                <label for="phone">
+                                    {{__('admin.Phone')}}
+                                </label>
+                                <input type="text" placeholder="{{__('admin.Phone')}}" name="phone" id="phone"
+                                       autocomplete="off"
+                                       class="form-control bg-transparent @error('phone') is-invalid @enderror" required
+                                       value="{{old('phone')}}"
+                                />
+                                @error('phone')
+                                <div class="fv-plugins message-container invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
+                            @endif
+
+                            @if($showCountry == '1')
+                            <!--begin::Country-->
+                            <div id="country-group" class="mt-5">
+                                <label for="country">
+                                    {{__('admin.Country')}}
+                                </label>
+                                <input type="text" placeholder="{{__('admin.Country')}}" name="country" id="country"
+                                       autocomplete="off"
+                                       class="form-control bg-transparent @error('country') is-invalid @enderror" required
+                                       value="{{old('country')}}"
+                                />
+                                @error('country')
+                                <div class="fv-plugins message-container invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
+                            @endif
                         </div>
                         <!--begin::Submit button-->
                         <div class="d-grid mb-10">

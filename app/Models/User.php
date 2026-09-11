@@ -37,6 +37,8 @@ class User extends Authenticatable implements LaratrustUser
         'final_serial',
         'degree',
         'school_id',
+        'phone',
+        'country',
     ];
 
     /**

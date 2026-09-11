@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\RegistrationSettingController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\TranslationController;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,9 @@ Route::group([
             Route::resource('schools', SchoolController::class)->names('schools');
             Route::resource('all-users', UserController::class)->names('admin.users');
             Route::resource('lookups', LookupController::class)->names('lookups');
+
+            Route::get('registration-settings', [RegistrationSettingController::class, 'index'])->name('registration-settings.index');
+            Route::post('registration-settings', [RegistrationSettingController::class, 'update'])->name('registration-settings.update');
 
 
             Route::group(['prefix' => 'translation', 'namespace' => 'Translation',], function () {
